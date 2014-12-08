@@ -40,11 +40,6 @@ func splits(s string) []string {
 	return strings.Split(s[a:z], "/")
 }
 
-// isParam checks if a string is a param, which starts with :, eg :post_id
-func isParam(s string) bool {
-	return strings.HasPrefix(s, ":")
-}
-
 // Match checks the pattern against the given path, returning any named params
 // in the process
 func (m *matcher) Match(pathStr string) (map[string]string, bool) {
@@ -57,7 +52,7 @@ func (m *matcher) Match(pathStr string) (map[string]string, bool) {
 
 	for i, v := range m.split {
 		n := b[i]
-		if isParam(v) {
+		if strings.HasPrefix(v, ":") {
 			p[v[1:]] = n
 			continue
 		}
