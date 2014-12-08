@@ -11,13 +11,14 @@ URL pattern match
     p := "/posts/:post_id/comments/:id"
     u := "/posts/123/comments/456"
 
-    m, ok := urlp.Matches(p, u)
+    m := urlp.NewMatcher(p)
+    v, ok := m.Match(u)
     if !ok {
       // handle url doesn't match pattern
     }
 
-    post_id := m.Get("post_id")
-    id := m.Get("id")
+    post_id := v["post_id"]
+    id := v["id"]
 
 
 ## License
