@@ -1,9 +1,25 @@
 package urlp
 
 import (
-	"net/url"
 	"strings"
 )
+
+type Matcher interface {
+	Match(string) (map[string]string, bool)
+}
+
+// matcher contains a preconditioned split of the path pattern
+type matcher struct {
+	pat   string
+	split []string
+}
+
+func NewMatcher(pat string) Matcher {
+	return &matcher{
+		pat:   pat,
+		split: splits(pat),
+	}
+}
 
 // splits by / removing an starting or ending /
 func splits(s string) []string {
@@ -29,21 +45,20 @@ func isParam(s string) bool {
 	return strings.HasPrefix(s, ":")
 }
 
-// Match matches a pattern to a path string. If the pattern contains named
-// params, those key:value pairs will be returned as a url.Values
-func Match(pat, pathStr string) (url.Values, bool) {
-	a := splits(pat)
+// Match checks the pattern against the given path, returning any named params
+// in the process
+func (m *matcher) Match(pathStr string) (map[string]string, bool) {
 	b := splits(pathStr)
-	if len(a) != len(b) {
+	if len(m.split) != len(b) {
 		return nil, false
 	}
 
-	p := url.Values{}
+	p := make(map[string]string)
 
-	for i, v := range a {
+	for i, v := range m.split {
 		n := b[i]
 		if isParam(v) {
-			p.Set(v[1:], n)
+			p[v[1:]] = n
 			continue
 		}
 		if n != v {

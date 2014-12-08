@@ -17,9 +17,10 @@ func TestExactMatches(t *testing.T) {
 		{"posts", "/posts/"},
 		{"/posts/new", "/posts/new"},
 	} {
-		m, ok := Match(v.p, v.u)
+		m := NewMatcher(v.p)
+		p, ok := m.Match(v.u)
 		assert.True(t, ok, v.p, " != ", v.u)
-		assert.Nil(t, m)
+		assert.Nil(t, p)
 	}
 }
 
@@ -27,10 +28,11 @@ func TestWithParams(t *testing.T) {
 	p := "/posts/:post_id/comments/:id"
 	u := "/posts/123/comments/456"
 
-	m, ok := Match(p, u)
+	m := NewMatcher(p)
+	v, ok := m.Match(u)
 	assert.True(t, ok)
-	assert.Equal(t, "123", m.Get("post_id"))
-	assert.Equal(t, "456", m.Get("id"))
+	assert.Equal(t, "123", v["post_id"])
+	assert.Equal(t, "456", v["id"])
 }
 
 func TestRoot(t *testing.T) {
@@ -41,9 +43,10 @@ func TestRoot(t *testing.T) {
 		{"/", ""},
 		{"", "/"},
 	} {
-		m, ok := Match(v.p, v.u)
+		m := NewMatcher(v.p)
+		p, ok := m.Match(v.u)
 		assert.True(t, ok, v.p, " != ", v.u)
-		assert.Nil(t, m)
+		assert.Nil(t, p)
 	}
 }
 
