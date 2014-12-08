@@ -47,7 +47,7 @@ func TestRoot(t *testing.T) {
 	}
 }
 
-func BenchmarkJointsVsFor(b *testing.B) {
+func BenchmarkJoinVsFor(b *testing.B) {
 	p := "/posts/comments/new"
 	u := "/posts/comments/new"
 
@@ -57,7 +57,7 @@ func BenchmarkJointsVsFor(b *testing.B) {
 	}
 }
 
-// joins and compares for exact matches
+// join and compares for exact matches
 // BenchmarkJointsVsFor     1000000              1365 ns/op
 //
 // for loop comparison
