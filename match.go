@@ -1,14 +1,9 @@
 package urlp
 
 import (
+	"net/url"
 	"strings"
 )
-
-type params map[string]string
-
-func (p params) Get(k string) string {
-	return p[k]
-}
 
 // splits by / removing an starting or ending /
 func splits(s string) []string {
@@ -34,22 +29,21 @@ func isParam(s string) bool {
 	return strings.HasPrefix(s, ":")
 }
 
-// Match matches a pattern to a path string. If the pattern contains param keys,
-// eg. :post_id, it will return those associated key:values as a
-// params `map[string]string`
-func Match(pat, pathStr string) (params, bool) {
+// Match matches a pattern to a path string. If the pattern contains named
+// params, those key:value pairs will be returned as a url.Values
+func Match(pat, pathStr string) (url.Values, bool) {
 	a := splits(pat)
 	b := splits(pathStr)
 	if len(a) != len(b) {
 		return nil, false
 	}
 
-	pr := make(map[string]string)
+	p := url.Values{}
 
 	for i, v := range a {
 		n := b[i]
-		if isParam(v) { // param
-			pr[v[1:]] = n
+		if isParam(v) {
+			p.Set(v[1:], n)
 			continue
 		}
 		if n != v {
@@ -57,9 +51,9 @@ func Match(pat, pathStr string) (params, bool) {
 		}
 	}
 
-	if len(pr) == 0 {
+	if len(p) == 0 {
 		return nil, true
 	}
 
-	return pr, true
+	return p, true
 }
