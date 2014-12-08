@@ -50,18 +50,27 @@ func TestRoot(t *testing.T) {
 	}
 }
 
-func BenchmarkJoinVsFor(b *testing.B) {
-	p := "/posts/comments/new"
+func BenchmarkMatcher(b *testing.B) {
+	p := "/posts/comments/:id"
 	u := "/posts/comments/new"
 
 	i := 0
 	for ; i < b.N; i++ {
-		Match(p, u)
+		m := NewMatcher(p)
+		m.Match(u)
 	}
 }
 
-// join and compares for exact matches
-// BenchmarkJointsVsFor     1000000              1365 ns/op
-//
-// for loop comparison
-// BenchmarkJointsVsFor     2000000              1007 ns/op
+func BenchmarkCacheMatcher(b *testing.B) {
+	p := "/posts/comments/:id"
+	u := "/posts/comments/new"
+	m := NewMatcher(p)
+
+	i := 0
+	for ; i < b.N; i++ {
+		m.Match(u)
+	}
+}
+
+// BenchmarkMatcher         1000000              1575 ns/op
+// BenchmarkCacheMatcher    1000000              1145 ns/op
