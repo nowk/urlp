@@ -10,12 +10,10 @@ func TestExactMatches(t *testing.T) {
 		p, u string
 	}{
 		{"/posts", "/posts"},
-		{"/posts", "posts/"},
 		{"/posts", "/posts/"},
-		{"posts", "/posts"},
-		{"posts", "posts/"},
-		{"posts", "/posts/"},
+
 		{"/posts/new", "/posts/new"},
+		{"/posts/new", "/posts/new/"},
 	} {
 		m := NewMatcher(v.p)
 		p, ok := m.Match(v.u)
@@ -36,13 +34,35 @@ func TestWithParams(t *testing.T) {
 	assert.Equal(t, 4, len(v))
 }
 
+func TestPathDoesNotMatch(t *testing.T) {
+	for _, v := range []struct {
+		p, u string
+	}{
+		{"/", "/posts"},
+
+		{"/posts", "/"},
+		{"/posts", "/comments"},
+		{"/posts", "/posts/123"},
+
+		{"/posts/:post_id", "/posts/123/comments"},
+		{"/posts/:post_id", "/posts/123/comments/"},
+
+		{"/posts/:post_id/comments", "/posts/123"},
+		{"/posts/:post_id/comments", "/posts/123/"},
+	} {
+		m := NewMatcher(v.p)
+		p, ok := m.Match(v.u)
+		assert.False(t, ok, v.p, " ", v.u)
+		assert.Nil(t, p)
+	}
+}
+
 func TestRoot(t *testing.T) {
 	for _, v := range []struct {
 		p, u string
 	}{
 		{"/", "/"},
 		{"/", ""},
-		{"", "/"},
 	} {
 		m := NewMatcher(v.p)
 		p, ok := m.Match(v.u)
@@ -73,5 +93,5 @@ func BenchmarkCacheMatcher(b *testing.B) {
 	}
 }
 
-// BenchmarkMatcher         1000000              1081 ns/op
-// BenchmarkCacheMatcher    5000000               610 ns/op
+// // BenchmarkMatcher         1000000              1081 ns/op
+// // BenchmarkCacheMatcher    5000000               610 ns/op

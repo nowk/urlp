@@ -1,9 +1,5 @@
 package urlp
 
-import (
-	"strings"
-)
-
 type params []string
 
 func (p params) Get(k string) string {
@@ -22,60 +18,79 @@ type Matcher interface {
 
 // matcher contains a preconditioned split of the path pattern
 type matcher struct {
-	pat   string
-	split []string
+	pat []byte
 }
 
 func NewMatcher(pat string) Matcher {
+	if pat == "" {
+		pat = "/"
+	}
+
 	return &matcher{
-		pat:   pat,
-		split: splits(pat),
+		pat: []byte(pat),
 	}
 }
 
-// splits by / removing an starting or ending /
-func splits(s string) []string {
-	if s == "" || s == "/" {
-		return []string{"/"}
+func dir(b []byte) ([]byte, int) {
+	for i, v := range b {
+		if v == '/' {
+			return b[:i], i
+		}
 	}
 
-	a := 0
-	z := len(s)
-	if strings.HasPrefix(s, "/") {
-		a = 1
-	}
-
-	if strings.HasSuffix(s, "/") {
-		z = z - 1
-	}
-
-	return strings.Split(s[a:z], "/")
+	return b, len(b)
 }
 
 // Match checks the pattern against the given path, returning any named params
 // in the process
 func (m *matcher) Match(pathStr string) (params, bool) {
-	b := splits(pathStr)
-	if len(m.split) != len(b) {
-		return nil, false
+	if pathStr == "" || pathStr == "/" {
+		if string(m.pat) == "/" {
+			return nil, true
+		}
 	}
 
-	p := make(params, 0, len(b))
+	p, y := m.pat, 0
+	u, x := []byte(pathStr), 0
 
-	for i, v := range m.split {
-		n := b[i]
-		if v[0:1] == ":" {
-			p = append(p, v, n)
+	// trim trailing slash
+	n := len(u)
+	if u[n-1] == '/' {
+		u = u[:n-1]
+	}
+
+	var pr params
+
+	for {
+		// exit if we make to the end of both paths without issue
+		if y == len(p) && x == len(u) {
+			break
+		}
+
+		if y > len(p)-1 || x > len(u)-1 {
+			return nil, false // uneven node lengths
+		}
+
+		if p[y] == ':' {
+			z, n := dir(p[y:])
+			a, m := dir(u[x:])
+
+			y = y + n
+			x = x + m
+
+			pr = append(pr, string(z), string(a))
 			continue
 		}
-		if n != v {
-			return nil, false
+
+		if p[y] != u[x] {
+			return nil, false // current chars don't match
+		}
+
+		if p[y] == u[x] {
+			y++
+			x++
 		}
 	}
 
-	if len(p) == 0 {
-		return nil, true
-	}
-
-	return p, true
+	return pr, true
 }
