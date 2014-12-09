@@ -17,8 +17,8 @@ URL pattern match
       // handle url doesn't match pattern
     }
 
-    post_id := v["post_id"]
-    id := v["id"]
+    post_id := v[":post_id"]
+    id := v[":id"]
 
 
 ## License
