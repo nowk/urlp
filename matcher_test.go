@@ -33,6 +33,7 @@ func TestWithParams(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, "123", v.Get(":post_id"))
 	assert.Equal(t, "456", v.Get(":id"))
+	assert.Equal(t, 4, len(v))
 }
 
 func TestRoot(t *testing.T) {
