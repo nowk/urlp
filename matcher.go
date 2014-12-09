@@ -53,7 +53,7 @@ func (m *matcher) Match(pathStr string) (map[string]string, bool) {
 	for i, v := range m.split {
 		n := b[i]
 		if strings.HasPrefix(v, ":") {
-			p[v[1:]] = n
+			p[v] = n
 			continue
 		}
 		if n != v {

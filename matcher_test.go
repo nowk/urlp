@@ -31,8 +31,8 @@ func TestWithParams(t *testing.T) {
 	m := NewMatcher(p)
 	v, ok := m.Match(u)
 	assert.True(t, ok)
-	assert.Equal(t, "123", v["post_id"])
-	assert.Equal(t, "456", v["id"])
+	assert.Equal(t, "123", v[":post_id"])
+	assert.Equal(t, "456", v[":id"])
 }
 
 func TestRoot(t *testing.T) {
