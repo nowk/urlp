@@ -31,8 +31,8 @@ func TestWithParams(t *testing.T) {
 	m := NewMatcher(p)
 	v, ok := m.Match(u)
 	assert.True(t, ok)
-	assert.Equal(t, "123", v[":post_id"])
-	assert.Equal(t, "456", v[":id"])
+	assert.Equal(t, "123", v.Get(":post_id"))
+	assert.Equal(t, "456", v.Get(":id"))
 }
 
 func TestRoot(t *testing.T) {
@@ -72,5 +72,5 @@ func BenchmarkCacheMatcher(b *testing.B) {
 	}
 }
 
-// BenchmarkMatcher         1000000              1575 ns/op
-// BenchmarkCacheMatcher    1000000              1145 ns/op
+// BenchmarkMatcher         1000000              1081 ns/op
+// BenchmarkCacheMatcher    5000000               610 ns/op

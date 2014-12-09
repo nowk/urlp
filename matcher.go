@@ -4,8 +4,20 @@ import (
 	"strings"
 )
 
+type params []string
+
+func (p params) Get(k string) string {
+	for i, v := range p {
+		if k == v && i%2 == 0 {
+			return p[i+1]
+		}
+	}
+
+	return ""
+}
+
 type Matcher interface {
-	Match(string) (map[string]string, bool)
+	Match(string) (params, bool)
 }
 
 // matcher contains a preconditioned split of the path pattern
@@ -42,18 +54,18 @@ func splits(s string) []string {
 
 // Match checks the pattern against the given path, returning any named params
 // in the process
-func (m *matcher) Match(pathStr string) (map[string]string, bool) {
+func (m *matcher) Match(pathStr string) (params, bool) {
 	b := splits(pathStr)
 	if len(m.split) != len(b) {
 		return nil, false
 	}
 
-	p := make(map[string]string)
+	p := make(params, 0, len(b))
 
 	for i, v := range m.split {
 		n := b[i]
-		if strings.HasPrefix(v, ":") {
-			p[v] = n
+		if v[0:1] == ":" {
+			p = append(p, v, n)
 			continue
 		}
 		if n != v {
