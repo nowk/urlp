@@ -64,11 +64,12 @@ func (m *matcher) Match(pathStr string) (params, bool) {
 	var pr params
 
 	for {
-		if y == len(p) && x == len(u) {
+		n, m := len(p), len(u)
+		if y == n && x == m {
 			break // when done reaching the end of both paths
 		}
 
-		if y > len(p)-1 || x > len(u)-1 {
+		if y > n-1 || x > m-1 {
 			return nil, false // if one path has a different number of directory trees
 		}
 
