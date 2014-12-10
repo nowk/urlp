@@ -52,7 +52,7 @@ func (m *matcher) Match(pathStr string) (params, bool) {
 		}
 	}
 
-	p, y := m.pat, 0
+	p, i := m.pat, 0
 	u, x := []byte(pathStr), 0
 
 	// trim trailing slash
@@ -65,30 +65,30 @@ func (m *matcher) Match(pathStr string) (params, bool) {
 
 	for {
 		n, m := len(p), len(u)
-		if y == n && x == m {
+		if i == n && x == m {
 			break // when done reaching the end of both paths
 		}
 
-		if y > n-1 || x > m-1 {
+		if i > n-1 || x > m-1 {
 			return nil, false // if one path has a different number of directory trees
 		}
 
-		if p[y] == ':' {
-			k, n := dir(p[y:])
+		if p[i] == ':' {
+			k, n := dir(p[i:])
 			v, m := dir(u[x:])
 
-			y = y + n
+			i = i + n
 			x = x + m
 
 			pr = append(pr, string(k), string(v))
 			continue
 		}
 
-		if p[y] != u[x] {
+		if p[i] != u[x] {
 			return nil, false // if the current chars do nto match
 		}
 
-		y++
+		i++
 		x++
 	}
 
