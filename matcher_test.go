@@ -93,5 +93,5 @@ func BenchmarkCacheMatcher(b *testing.B) {
 	}
 }
 
-// // BenchmarkMatcher         1000000              1081 ns/op
-// // BenchmarkCacheMatcher    5000000               610 ns/op
+// BenchmarkMatcher         2000000               743 ns/op
+// BenchmarkCacheMatcher    5000000               462 ns/op
