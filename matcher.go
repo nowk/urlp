@@ -16,11 +16,12 @@ type Matcher interface {
 	Match(string) (params, bool)
 }
 
-// matcher contains a preconditioned split of the path pattern
+// matcher contains a byte type of the path pattern
 type matcher struct {
 	pat []byte
 }
 
+// NewMatcher returns a new matcher. Blank path patterns will default to "/"
 func NewMatcher(pat string) Matcher {
 	if pat == "" {
 		pat = "/"
@@ -31,6 +32,7 @@ func NewMatcher(pat string) Matcher {
 	}
 }
 
+// dir the first directory level in the path given
 func dir(b []byte) ([]byte, int) {
 	for i, v := range b {
 		if v == '/' {
@@ -62,13 +64,12 @@ func (m *matcher) Match(pathStr string) (params, bool) {
 	var pr params
 
 	for {
-		// exit if we make to the end of both paths without issue
 		if y == len(p) && x == len(u) {
-			break
+			break // when done reaching the end of both paths
 		}
 
 		if y > len(p)-1 || x > len(u)-1 {
-			return nil, false // uneven node lengths
+			return nil, false // if one path has a different number of directory trees
 		}
 
 		if p[y] == ':' {
@@ -83,7 +84,7 @@ func (m *matcher) Match(pathStr string) (params, bool) {
 		}
 
 		if p[y] != u[x] {
-			return nil, false // current chars don't match
+			return nil, false // if the current chars do nto match
 		}
 
 		if p[y] == u[x] {
