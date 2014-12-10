@@ -87,10 +87,8 @@ func (m *matcher) Match(pathStr string) (params, bool) {
 			return nil, false // if the current chars do nto match
 		}
 
-		if p[y] == u[x] {
-			y++
-			x++
-		}
+		y++
+		x++
 	}
 
 	return pr, true
