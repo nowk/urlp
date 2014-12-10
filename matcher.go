@@ -73,13 +73,13 @@ func (m *matcher) Match(pathStr string) (params, bool) {
 		}
 
 		if p[y] == ':' {
-			z, n := dir(p[y:])
-			a, m := dir(u[x:])
+			k, n := dir(p[y:])
+			v, m := dir(u[x:])
 
 			y = y + n
 			x = x + m
 
-			pr = append(pr, string(z), string(a))
+			pr = append(pr, string(k), string(v))
 			continue
 		}
 
