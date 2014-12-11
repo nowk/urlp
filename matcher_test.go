@@ -115,6 +115,7 @@ func TestRoot(t *testing.T) {
 		assert.Nil(t, p)
 	}
 }
+
 func TestFormatParsing(t *testing.T) {
 	for _, v := range [][]string{
 		{"/posts.:format", "/posts.html", "html"},
@@ -127,7 +128,7 @@ func TestFormatParsing(t *testing.T) {
 	} {
 		pat, path, format := v[0], v[1], v[2]
 		p, ok := Match(pat, path)
-		assert.True(t, ok, ok)
+		assert.True(t, ok)
 		assert.Equal(t, format, p.Get(":_format"))
 	}
 }
