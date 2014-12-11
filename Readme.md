@@ -42,6 +42,8 @@ With a `.:format` set the pattern will match paths with or without the extension
 
 *`.:format` must be at the end of the pattern, else it will be treated as any other named parameter.*
 
+*Without `.:format` paths with a `.ext` will not be matched*
+
 
 ## License
 
