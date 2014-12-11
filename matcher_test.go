@@ -5,31 +5,47 @@ import (
 	"testing"
 )
 
-func TestExactMatches(t *testing.T) {
-	for _, v := range []struct {
-		p, u string
-	}{
+func TestMatchesIgnoreTrailingSlash(t *testing.T) {
+	for _, v := range [][]string{
+		{"/", "/"},
 		{"/posts", "/posts"},
-		{"/posts", "/posts/"},
-
 		{"/posts/new", "/posts/new"},
-		{"/posts/new", "/posts/new/"},
 	} {
-		p, ok := Match(v.p, v.u)
-		assert.True(t, ok, v.p, " != ", v.u)
-		assert.Nil(t, p)
+		pat, path := v[0], v[1]
+
+		{
+			p, ok := Match(pat, path)
+			assert.True(t, ok)
+			assert.Nil(t, p)
+		}
+		{
+			p, ok := Match(pat, path+"/")
+			assert.True(t, ok)
+			assert.Nil(t, p)
+		}
 	}
 }
 
-func TestWithParams(t *testing.T) {
-	p := "/posts/:post_id/comments/:id"
-	u := "/posts/123/comments/456"
+func TestMatchesNamedParamsReturnsParams(t *testing.T) {
+	for _, v := range []struct {
+		pat, path string
+		params    []string
+	}{
+		{"/posts/:id", "/posts/123", []string{":id", "123"}},
+		{"/posts/:post_id/comments/:id", "/posts/123/comments/456", []string{":post_id", "123", ":id", "456"}},
+	} {
+		{
+			p, ok := Match(v.pat, v.path)
+			assert.True(t, ok)
+			assert.Equal(t, params(v.params), p)
+		}
+		{
+			p, ok := Match(v.pat, v.path+"/")
+			assert.True(t, ok)
+			assert.Equal(t, params(v.params), p)
+		}
+	}
 
-	v, ok := Match(p, u)
-	assert.True(t, ok)
-	assert.Equal(t, "123", v.Get(":post_id"))
-	assert.Equal(t, "456", v.Get(":id"))
-	assert.Equal(t, 4, len(v))
 }
 
 func TestPathDoesNotMatch(t *testing.T) {
