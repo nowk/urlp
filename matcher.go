@@ -30,11 +30,14 @@ func dir(b string) (string, int) {
 }
 
 // trimrs trims trailing slash
-func trimrs(s *string) {
-	n := len(*s)
-	if (*s)[n-1] == '/' {
-		*s = (*s)[:n-1]
+func trimrs(s string) (string, int) {
+	n := len(s)
+	l := n - 1
+	if s[l] == '/' {
+		return s[:l], l
 	}
+
+	return s, n
 }
 
 // Match checks the pattern against the given path, returning any named params
@@ -43,14 +46,44 @@ func Match(pattern, path string) (params, bool) {
 	if (path == "" || path == "/") && pattern == "/" {
 		return nil, true
 	}
-	trimrs(&path)
 
+	var pr params
+	var s int
+	path, s = trimrs(path)
 	p := len(pattern)
-	s := len(path)
+
+	if p > formatPatlen {
+		if f := pattern[p-formatPatlen:]; f == formatPat {
+			p = p - formatPatlen
+			pattern = pattern[:p]
+
+			i := s - 1
+			for {
+				if i == 0 {
+					break
+				}
+
+				c := path[i]
+				if c == '.' {
+					ext := path[i+1:]
+					pr = append(pr, ":_format", ext)
+
+					path = path[:i]
+					s = i
+				}
+
+				if c == '/' {
+					break // if reached directory, no format, exit
+				}
+
+				i--
+			}
+		}
+	}
+
 	p_1 := p - 1
 	s_1 := s - 1
 
-	var pr params
 	var x, y int = 0, 0
 	for {
 		if x == p && y == s {
