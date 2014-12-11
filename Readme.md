@@ -16,6 +16,32 @@ URL pattern match
     post_id := v.Get(":post_id")
     id := v.Get(":id")
 
+---
+
+##### .:format
+
+Adding `.:format` at the end of the pattern returns a special named param `:_format` which returns the given format.
+
+    v, ok := urlp.match("/posts/:id.:format", "/posts/123.json")
+    if !ok {
+      // handle
+    }
+
+    id := v.Get(":id")
+    format := v.Get(":_format")
+
+With a `.:format` set the pattern will match paths with or without the extension.
+
+    v, ok := urlp.match("/posts/:id.:format", "/posts/123.json")
+    // ok       => true
+    // :_format => "json"
+
+    v, ok := urlp.match("/posts/:id.:format", "/posts/123")
+    // ok       => true
+    // :_format => ""
+
+*`.:format` must be at the end of the pattern, else it will be treated as any other named parameter.*
+
 
 ## License
 
