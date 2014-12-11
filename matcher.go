@@ -23,18 +23,21 @@ func dir(b string) (string, int) {
 	return b, len(b)
 }
 
+// trimrs trims trailing slash
+func trimrs(s *string) {
+	n := len(*s)
+	if (*s)[n-1] == '/' {
+		*s = (*s)[:n-1]
+	}
+}
+
 // Match checks the pattern against the given path, returning any named params
 // in the process
 func Match(pattern, path string) (params, bool) {
 	if (path == "" || path == "/") && pattern == "/" {
 		return nil, true
 	}
-
-	// trim trailing slash
-	n := len(path)
-	if path[n-1] == '/' {
-		path = path[:n-1]
-	}
+	trimrs(&path)
 
 	p := len(pattern)
 	s := len(path)
