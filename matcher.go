@@ -3,8 +3,14 @@ package urlp
 type params []string
 
 func (p params) Get(k string) string {
+	r := len(p) - 2
+
 	for i, v := range p {
 		if k == v && i%2 == 0 {
+			if i > r {
+				return ""
+			}
+
 			return p[i+1]
 		}
 	}
