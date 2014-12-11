@@ -60,7 +60,8 @@ func Match(pattern, path string) (params, bool) {
 	if p > formatPatlen {
 		n := p - formatPatlen
 		if pattern[n:] == formatPat {
-			pattern, p = pattern[:n], n
+			pattern = pattern[:n]
+			p = n
 
 			i := s - 1
 			for ; i > 0; i-- {
@@ -71,7 +72,9 @@ func Match(pattern, path string) (params, bool) {
 
 				if c == '.' {
 					pr = append(pr, ":_format", path[i+1:])
-					path, s = path[:i], i
+
+					path = path[:i]
+					s = i
 				}
 			}
 		}
