@@ -24,4 +24,5 @@ func BenchmarkMatcherWithFormat(b *testing.B) {
 	}
 }
 
-// BenchmarkMatcher         5000000               325 ns/op
+// BenchmarkMatcher                 5000000               337 ns/op
+// BenchmarkMatcherWithFormat       5000000               346 ns/op

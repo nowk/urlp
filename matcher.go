@@ -58,37 +58,27 @@ func Match(pattern, path string) (params, bool) {
 	p := len(pattern)
 
 	if p > formatPatlen {
-		if f := pattern[p-formatPatlen:]; f == formatPat {
-			p = p - formatPatlen
-			pattern = pattern[:p]
+		n := p - formatPatlen
+		if pattern[n:] == formatPat {
+			pattern, p = pattern[:n], n
 
 			i := s - 1
-			for {
-				if i == 0 {
-					break
-				}
-
+			for ; i > 0; i-- {
 				c := path[i]
-				if c == '.' {
-					ext := path[i+1:]
-					pr = append(pr, ":_format", ext)
-
-					path = path[:i]
-					s = i
-				}
-
 				if c == '/' {
 					break // if reached directory, no format, exit
 				}
 
-				i--
+				if c == '.' {
+					pr = append(pr, ":_format", path[i+1:])
+					path, s = path[:i], i
+				}
 			}
 		}
 	}
 
 	p_1 := p - 1
 	s_1 := s - 1
-
 	var x, y int = 0, 0
 	for {
 		if x == p && y == s {
