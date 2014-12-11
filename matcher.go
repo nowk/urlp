@@ -25,39 +25,36 @@ func dir(b string) (string, int) {
 
 // Match checks the pattern against the given path, returning any named params
 // in the process
-func Match(pat, pathStr string) (params, bool) {
-	if (pathStr == "" || pathStr == "/") && pat == "/" {
+func Match(pattern, path string) (params, bool) {
+	if (path == "" || path == "/") && pattern == "/" {
 		return nil, true
 	}
 
-	p, x := pat, 0
-	s, y := pathStr, 0
-
 	// trim trailing slash
-	n := len(s)
-	if s[n-1] == '/' {
-		s = s[:n-1]
+	n := len(path)
+	if path[n-1] == '/' {
+		path = path[:n-1]
 	}
 
+	p := len(pattern)
+	s := len(path)
+	p_1 := p - 1
+	s_1 := s - 1
+
 	var pr params
-
-	plen := len(p)
-	slen := len(s)
-	plen_1 := plen - 1
-	slen_1 := slen - 1
-
+	var x, y int = 0, 0
 	for {
-		if x == plen && y == slen {
+		if x == p && y == s {
 			break // when done reaching the end of both paths
 		}
 
-		if x > plen_1 || y > slen_1 {
+		if x > p_1 || y > s_1 {
 			return nil, false // if one path has a different number of directory trees
 		}
 
-		if p[x] == ':' {
-			k, m := dir(p[x:])
-			v, n := dir(s[y:])
+		if pattern[x] == ':' {
+			k, m := dir(pattern[x:])
+			v, n := dir(path[y:])
 
 			x = x + m
 			y = y + n
@@ -66,7 +63,7 @@ func Match(pat, pathStr string) (params, bool) {
 			continue
 		}
 
-		if p[x] != s[y] {
+		if pattern[x] != path[y] {
 			return nil, false // if the current chars do nto match
 		}
 
