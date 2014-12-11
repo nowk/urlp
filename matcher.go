@@ -12,26 +12,6 @@ func (p params) Get(k string) string {
 	return ""
 }
 
-type Matcher interface {
-	Match(string) (params, bool)
-}
-
-// matcher contains a byte type of the path pattern
-type matcher struct {
-	pat string
-}
-
-// NewMatcher returns a new matcher. Blank path patterns will default to "/"
-func NewMatcher(pat string) Matcher {
-	if pat == "" {
-		pat = "/"
-	}
-
-	return &matcher{
-		pat: pat,
-	}
-}
-
 // dir the first directory level in the path given
 func dir(b string) (string, int) {
 	for i, v := range b {
@@ -45,12 +25,12 @@ func dir(b string) (string, int) {
 
 // Match checks the pattern against the given path, returning any named params
 // in the process
-func (m *matcher) Match(pathStr string) (params, bool) {
-	if (pathStr == "" || pathStr == "/") && m.pat == "/" {
+func Match(pat, pathStr string) (params, bool) {
+	if (pathStr == "" || pathStr == "/") && pat == "/" {
 		return nil, true
 	}
 
-	p, x := m.pat, 0
+	p, x := pat, 0
 	s, y := pathStr, 0
 
 	// trim trailing slash
