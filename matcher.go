@@ -46,10 +46,8 @@ func dir(b string) (string, int) {
 // Match checks the pattern against the given path, returning any named params
 // in the process
 func (m *matcher) Match(pathStr string) (params, bool) {
-	if pathStr == "" || pathStr == "/" {
-		if m.pat == "/" {
-			return nil, true
-		}
+	if (pathStr == "" || pathStr == "/") && m.pat == "/" {
+		return nil, true
 	}
 
 	p, x := m.pat, 0
