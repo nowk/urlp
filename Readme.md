@@ -8,13 +8,9 @@ URL pattern match
 
 ## Examples
 
-    p := "/posts/:post_id/comments/:id"
-    u := "/posts/123/comments/456"
-
-    m := urlp.NewMatcher(p)
-    v, ok := m.Match(u)
+    v, ok := urlp.Match("/posts/:post_id/comments/:id", "/posts/123/comments/456")
     if !ok {
-      // handle url doesn't match pattern
+      // handle
     }
 
     post_id := v.Get(":post_id")
