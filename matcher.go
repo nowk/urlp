@@ -18,7 +18,7 @@ type Matcher interface {
 
 // matcher contains a byte type of the path pattern
 type matcher struct {
-	pat []byte
+	pat string
 }
 
 // NewMatcher returns a new matcher. Blank path patterns will default to "/"
@@ -28,12 +28,12 @@ func NewMatcher(pat string) Matcher {
 	}
 
 	return &matcher{
-		pat: []byte(pat),
+		pat: pat,
 	}
 }
 
 // dir the first directory level in the path given
-func dir(b []byte) ([]byte, int) {
+func dir(b string) (string, int) {
 	for i, v := range b {
 		if v == '/' {
 			return b[:i], i
@@ -47,13 +47,13 @@ func dir(b []byte) ([]byte, int) {
 // in the process
 func (m *matcher) Match(pathStr string) (params, bool) {
 	if pathStr == "" || pathStr == "/" {
-		if string(m.pat) == "/" {
+		if m.pat == "/" {
 			return nil, true
 		}
 	}
 
 	p, x := m.pat, 0
-	s, y := []byte(pathStr), 0
+	s, y := pathStr, 0
 
 	// trim trailing slash
 	n := len(s)
@@ -84,7 +84,7 @@ func (m *matcher) Match(pathStr string) (params, bool) {
 			x = x + m
 			y = y + n
 
-			pr = append(pr, string(k), string(v))
+			pr = append(pr, k, v)
 			continue
 		}
 
