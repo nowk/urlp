@@ -14,4 +14,14 @@ func BenchmarkMatcher(b *testing.B) {
 	}
 }
 
+func BenchmarkMatcherWithFormat(b *testing.B) {
+	p := "/posts/comments/:id.:format"
+	u := "/posts/comments/new"
+
+	i := 0
+	for ; i < b.N; i++ {
+		Match(p, u)
+	}
+}
+
 // BenchmarkMatcher         5000000               325 ns/op

@@ -40,6 +40,11 @@ func trimrs(s string) (string, int) {
 	return s, n
 }
 
+const (
+	formatPat    = ".:format"
+	formatPatlen = len(formatPat)
+)
+
 // Match checks the pattern against the given path, returning any named params
 // in the process
 func Match(pattern, path string) (params, bool) {
