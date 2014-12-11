@@ -132,3 +132,10 @@ func TestFormatParsing(t *testing.T) {
 		assert.Equal(t, format, p.Get(":_format"))
 	}
 }
+
+func TestFormatWithFormatNamedParam(t *testing.T) {
+	p, ok := Match("/posts/:format/:id.:format", "/posts/long-format/123.html")
+	assert.True(t, ok)
+	assert.Equal(t, "html", p.Get(":_format"))
+	assert.Equal(t, "long-format", p.Get(":format"))
+}
