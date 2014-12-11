@@ -6,6 +6,11 @@
 URL pattern match
 
 
+## Install
+
+    go get gopkg.in/nowk/urlp.v1
+
+
 ## Examples
 
     v, ok := urlp.Match("/posts/:post_id/comments/:id", "/posts/123/comments/456")
