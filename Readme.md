@@ -27,7 +27,7 @@ URL pattern match
 
 Adding `.:format` at the end of the pattern returns a special named param `:_format` which returns the given format.
 
-    v, ok := urlp.match("/posts/:id.:format", "/posts/123.json")
+    v, ok := urlp.Match("/posts/:id.:format", "/posts/123.json")
     if !ok {
       // handle
     }
@@ -37,11 +37,11 @@ Adding `.:format` at the end of the pattern returns a special named param `:_for
 
 With a `.:format` set the pattern will match paths with or without the extension.
 
-    v, ok := urlp.match("/posts/:id.:format", "/posts/123.json")
+    v, ok := urlp.Match("/posts/:id.:format", "/posts/123.json")
     // ok       => true
     // :_format => "json"
 
-    v, ok := urlp.match("/posts/:id.:format", "/posts/123")
+    v, ok := urlp.Match("/posts/:id.:format", "/posts/123")
     // ok       => true
     // :_format => ""
 
