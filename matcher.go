@@ -45,6 +45,33 @@ var (
 	fl = 8
 )
 
+// formatp parses the pattern and path for `.:format`
+func formatp(pattern, path string) (string, string, string, bool) {
+	var s int
+	path, s = trimrs(path)
+
+	if p := len(pattern); p > fl {
+		n := p - fl
+		if pattern[n:] == fk {
+			pattern = pattern[:n]
+
+			i := s - 1
+			for ; i > 0; i-- {
+				c := path[i]
+				if c == '/' {
+					break
+				}
+
+				if c == '.' {
+					return pattern, path[:i], path[i+1:], true
+				}
+			}
+		}
+	}
+
+	return pattern, path, "", false
+}
+
 // Match checks the pattern against the given path, returning any named params
 // in the process
 func Match(pattern, path string) (params, bool) {
@@ -53,32 +80,14 @@ func Match(pattern, path string) (params, bool) {
 	}
 
 	var pr params
-	var s int
-	path, s = trimrs(path)
-	p := len(pattern)
-
-	if p := len(pattern); p > fl {
-		n := p - fl
-		if pattern[n:] == fk {
-			pattern = pattern[:n]
-			p = n
-
-			i := s - 1
-			for ; i > 0; i-- {
-				c := path[i]
-				if c == '/' {
-					break // if reached directory, no format, exit
-				}
-
-				if c == '.' {
-					pr = append(pr, ":_format", path[i+1:])
-
-					path = path[:i]
-					s = i
-				}
-			}
-		}
+	var ok bool
+	var f string
+	pattern, path, f, ok = formatp(pattern, path)
+	if ok {
+		pr = append(pr, ":_format", f)
 	}
+	p := len(pattern)
+	s := len(path)
 
 	p_1 := p - 1
 	s_1 := s - 1
