@@ -40,9 +40,9 @@ func trimrs(s string) (string, int) {
 	return s, n
 }
 
-const (
-	formatPat    = ".:format"
-	formatPatlen = len(formatPat)
+var (
+	fk = ".:format"
+	fl = 8
 )
 
 // Match checks the pattern against the given path, returning any named params
@@ -57,9 +57,9 @@ func Match(pattern, path string) (params, bool) {
 	path, s = trimrs(path)
 	p := len(pattern)
 
-	if p > formatPatlen {
-		n := p - formatPatlen
-		if pattern[n:] == formatPat {
+	if p := len(pattern); p > fl {
+		n := p - fl
+		if pattern[n:] == fk {
 			pattern = pattern[:n]
 			p = n
 
