@@ -101,7 +101,8 @@ func Match(pattern, path string) (params, bool) {
 			return nil, false // if one path has a different number of directory trees
 		}
 
-		if pattern[x] == ':' {
+		c := pattern[x]
+		if c == ':' {
 			k, m := dir(pattern[x:])
 			v, n := dir(path[y:])
 
@@ -112,7 +113,7 @@ func Match(pattern, path string) (params, bool) {
 			continue
 		}
 
-		if pattern[x] != path[y] {
+		if c != path[y] {
 			return nil, false // if the current chars do nto match
 		}
 
