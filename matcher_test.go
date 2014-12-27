@@ -1,7 +1,7 @@
 package urlp
 
 import (
-	"github.com/nowk/assert"
+	"gopkg.in/nowk/assert.v2"
 	"testing"
 )
 
