@@ -1,7 +1,7 @@
 # urlp
 
 [![Build Status](https://travis-ci.org/nowk/urlp.svg?branch=master)](https://travis-ci.org/nowk/urlp)
-[![GoDoc](https://godoc.org/github.com/nowk/urlp?status.svg)](http://godoc.org/github.com/nowk/urlp)
+[![GoDoc](https://godoc.org/gopkg.in/nowk/urlp.v1?status.svg)](http://godoc.org/gopkg.in/nowk/urlp.v1)
 
 URL pattern match
 
