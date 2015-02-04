@@ -33,7 +33,7 @@ func dir(b string) (string, int) {
 func trimrs(s string) (string, int) {
 	n := len(s)
 	l := n - 1
-	if s[l] == '/' {
+	if n > 0 && s[l] == '/' {
 		return s[:l], l
 	}
 

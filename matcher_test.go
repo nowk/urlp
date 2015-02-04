@@ -139,3 +139,8 @@ func TestFormatWithFormatNamedParam(t *testing.T) {
 	assert.Equal(t, "html", p.Get(":_format"))
 	assert.Equal(t, "long-format", p.Get(":format"))
 }
+
+func TestDoesNotIndexOutOfRangeWhenMatchingPathToEmptyString(t *testing.T) {
+	_, ok := Match("/posts", "")
+	assert.False(t, ok)
+}
