@@ -39,7 +39,7 @@ func parseNodes(pat string) ([]node, int) {
 	for {
 		c++
 
-		if (c == m || pat[c] == '/') && c > 0 {
+		if c == m || pat[c] == '/' {
 			no := node(pat[i:c])
 			if no == "/" {
 				break
