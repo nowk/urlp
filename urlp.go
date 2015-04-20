@@ -26,6 +26,8 @@ func NewPath(pat string) *Path {
 	}
 }
 
+// parseNodes parses string into individual node sections, eg /<path> and
+// returns the number of nodes that are param based nodes eg /:<param>.
 func parseNodes(pat string) ([]node, int) {
 	if pat == "/" || pat == "" {
 		return []node{"/"}, 0
@@ -61,6 +63,8 @@ func parseNodes(pat string) ([]node, int) {
 	return n, p
 }
 
+// nodeCount returns the number of nodes, eg /<path> sections available in a
+// given string. The last slash is not counted as a node.
 func nodeCount(pat string) int {
 	var lastchar rune
 	n := 0
