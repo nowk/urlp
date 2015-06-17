@@ -76,6 +76,8 @@ func BenchmarkMatcher2Params(b *testing.B) {
 // 	}
 // }
 
-// // BenchmarkMatcher                 5000000               337 ns/op
-// // BenchmarkMatcherWithFormat       5000000               574 ns/op
-// // BenchmarkMatcherWithFormatNoExt  5000000               345 ns/op
+// urlp.v2
+// BenchmarkMatcherExact                   200000000               8.89 ns/op               0 B/op          0 allocs/op
+// BenchmarkMatcherExactWithTrailingSlash  100000000               12.7 ns/op               0 B/op          0 allocs/op
+// BenchmarkMatcher1Param                   10000000                193 ns/op              32 B/op          1 allocs/op
+// BenchmarkMatcher2Params                   5000000                292 ns/op              64 B/op          1 allocs/op

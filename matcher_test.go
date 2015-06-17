@@ -126,6 +126,7 @@ func TestRoot(t *testing.T) {
 	}
 }
 
+// TODO decide if .:format integration is needed
 // func TestFormatParsing(t *testing.T) {
 // 	for _, v := range [][]string{
 // 		{"/posts.:format", "/posts.html", "html"},
