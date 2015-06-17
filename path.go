@@ -27,7 +27,7 @@ func parsePath(s string) ([]string, int) {
 
 	var a []string
 
-	l := len(s)
+	slen := len(s)
 	p := 0 // param count
 	c := 0 // cursor
 
@@ -35,7 +35,7 @@ func parsePath(s string) ([]string, int) {
 	for {
 		i++
 
-		if i == l || s[i] == '/' {
+		if i == slen || s[i] == '/' {
 			d := s[c:i]
 			if d == "/" {
 				break // at last trailing slash
@@ -50,7 +50,7 @@ func parsePath(s string) ([]string, int) {
 			c = i // move cursor
 		}
 
-		if i >= l {
+		if i >= slen {
 			break
 		}
 	}

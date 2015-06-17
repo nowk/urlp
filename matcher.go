@@ -54,7 +54,7 @@ func Match(p *Path, s string) (params, bool) {
 		alen := len(a)
 		n++
 
-		if ok = slen > alen; !ok {
+		if ok = (slen > alen); !ok {
 			break // dir is longer than string
 		}
 
@@ -83,11 +83,13 @@ func Match(p *Path, s string) (params, bool) {
 			break // does not match
 		}
 
-		if ok = s[i] == '/'; !ok {
+		if ok = (s[i] == '/'); !ok {
 			break // if next char is not a /
 		}
 	}
 
+	// check to make sure the num of dirs iterated through matches the num of dirs
+	// in the Path object
 	if n != dlen {
 		ok = false
 	}
