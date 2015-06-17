@@ -40,6 +40,10 @@ func TestMatchesNamedParamsReturnsParams(t *testing.T) {
 			"/posts/:post_id/comments/:id", "/posts/123/comments/456",
 			[]string{":post_id", "123", ":id", "456"},
 		},
+		{
+			"/posts/:post_id/comments/:id/replies", "/posts/123/comments/456/replies",
+			[]string{":post_id", "123", ":id", "456"},
+		},
 	} {
 		{
 			p, ok := Match(NewPath(v.pat), v.path)

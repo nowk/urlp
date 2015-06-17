@@ -42,9 +42,15 @@ func Match(p *Path, s string) (params, bool) {
 	n := 0 // dir index
 
 	for i := 0; ; {
-		if i++; i > m {
+		if i > m {
 			break // counted past length of s
 		}
+
+		if ok = (s[i] == '/'); !ok {
+			break // next cusror start location is not /
+		}
+
+		i++
 
 		if ok = (n < dlen); !ok {
 			break // has more dirs than available
@@ -81,10 +87,6 @@ func Match(p *Path, s string) (params, bool) {
 		b := s[h:i]
 		if ok = (a == b); !ok {
 			break // does not match
-		}
-
-		if ok = (s[i] == '/'); !ok {
-			break // if next char is not a /
 		}
 	}
 
