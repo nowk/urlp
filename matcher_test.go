@@ -87,8 +87,17 @@ func TestPathDoesNotMatch(t *testing.T) {
 		p, u string
 	}{
 		{"/", "/posts"},
+		{"/p", "/posts"},
+		{"/po", "/posts"},
+		{"/pos", "/posts"},
+		{"/post", "/posts"},
 
+		{"/posts", "/post"},
+		{"/posts", "/pos"},
+		{"/posts", "/po"},
+		{"/posts", "/p"},
 		{"/posts", "/"},
+
 		{"/posts", "/comments"},
 		{"/posts", "/posts/123"},
 
