@@ -1,53 +1,27 @@
 # urlp
 
 [![Build Status](https://travis-ci.org/nowk/urlp.svg?branch=master)](https://travis-ci.org/nowk/urlp)
-[![GoDoc](https://godoc.org/gopkg.in/nowk/urlp.v1?status.svg)](http://godoc.org/gopkg.in/nowk/urlp.v1)
+[![GoDoc](https://godoc.org/gopkg.in/nowk/urlp.v2?status.svg)](http://godoc.org/gopkg.in/nowk/urlp.v2)
 
 URL pattern match
 
 
 ## Install
 
-    go get gopkg.in/nowk/urlp.v1
+    go get gopkg.in/nowk/urlp.v2
 
 
 ## Examples
 
-    v, ok := urlp.Match("/posts/:post_id/comments/:id", "/posts/123/comments/456")
+    p := urlp.NewPath("/posts/:post_id/comments/:id")
+
+    v, ok := urlp.Match(p, "/posts/123/comments/456")
     if !ok {
       // handle
     }
 
-    post_id := v.Get(":post_id")
-    id := v.Get(":id")
-
----
-
-##### .:format
-
-Adding `.:format` at the end of the pattern returns a special named param `:_format` which returns the given format.
-
-    v, ok := urlp.Match("/posts/:id.:format", "/posts/123.json")
-    if !ok {
-      // handle
-    }
-
-    id := v.Get(":id")
-    format := v.Get(":_format")
-
-With a `.:format` set the pattern will match paths with or without the extension.
-
-    v, ok := urlp.Match("/posts/:id.:format", "/posts/123.json")
-    // ok       => true
-    // :_format => "json"
-
-    v, ok := urlp.Match("/posts/:id.:format", "/posts/123")
-    // ok       => true
-    // :_format => ""
-
-*`.:format` must be at the end of the pattern, else it will be treated as any other named parameter.*
-
-*Without `.:format` paths with a `.ext` will not be matched*
+    v.Get(":post_id") // "123"
+    v.Get(":id")      // "456"
 
 
 ## License
