@@ -21,16 +21,14 @@ func (p params) Get(k string) string {
 // Match checks the pattern against the given path, returning any named params
 // in the process
 func Match(p *Path, s string) (params, bool) {
-	l := len(s)
-	m := l - 1
+	slen := len(s)
+	m := slen - 1
 
-	// trim trailing slash
-	if l > 1 && s[m] == '/' {
-		s = s[:m]
+	if slen > 1 && s[m] == '/' {
+		s = s[:m] // trim trailing slash
 
-		// decrement counts
-		l = l - 1
-		m = m - 1
+		slen--
+		m--
 	}
 
 	if s == p.Pattern || (s == "" && p.Pattern == "/") {
@@ -40,49 +38,57 @@ func Match(p *Path, s string) (params, bool) {
 	var ok bool
 	var pr params
 
-	d := len(p.Dirs)
-	n := 0 // node index
+	dlen := len(p.Dirs)
+	n := 0 // dir index
 
 	for i := 0; ; {
-		i++
-		if i > m {
+		if i++; i > m {
 			break // counted past length of s
 		}
 
-		if ok = (n < d); !ok {
-			break // has more nodes than available
-		}
-
-		j := i
-		for ; j < l; j++ {
-			if s[j] == '/' {
-				break
-			}
+		if ok = (n < dlen); !ok {
+			break // has more dirs than available
 		}
 
 		a := p.Dirs[n]
-		b := s[i-1 : j]
+		alen := len(a)
+		n++
+
+		if ok = slen > alen; !ok {
+			break // dir is longer than string
+		}
 
 		if a[0] == ':' {
-			// lazy alloc
 			if pr == nil {
 				pr = make(params, 0, p.NoOfParams)
 			}
 
-			pr = append(pr, a, b[1:])
-
-		} else {
-			if ok = (a == b); !ok {
-				break
+			h := i
+			for ; i < slen; i++ {
+				if s[i] == '/' {
+					break
+				}
 			}
+
+			pr = append(pr, a, s[h:i])
+
+			continue
 		}
 
-		i = j // shift i for length
-		n++
+		h := i - 1
+		i = h + alen
+
+		b := s[h:i]
+		if ok = (a == b); !ok {
+			break // does not match
+		}
+
+		if ok = s[i] == '/'; !ok {
+			break // if next char is not a /
+		}
 	}
 
-	if n != d {
-		pr = nil // pr[:0]
+	if n != dlen {
 		ok = false
 	}
 
