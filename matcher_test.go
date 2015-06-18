@@ -33,6 +33,10 @@ func TestMatchesNamedParamsReturnsParams(t *testing.T) {
 		params    []string
 	}{
 		{
+			"/:id", "/1",
+			[]string{":id", "1"},
+		},
+		{
 			"/posts/:id", "/posts/123",
 			[]string{":id", "123"},
 		},

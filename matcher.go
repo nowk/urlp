@@ -60,10 +60,6 @@ func Match(p *Path, s string) (params, bool) {
 		alen := len(a)
 		n++
 
-		if ok = (slen > alen); !ok {
-			break // dir is longer than string
-		}
-
 		if a[0] == ':' {
 			if pr == nil {
 				pr = make(params, 0, p.NoOfParams)
@@ -79,6 +75,10 @@ func Match(p *Path, s string) (params, bool) {
 			pr = append(pr, a, s[h:i])
 
 			continue
+		}
+
+		if ok = (slen > alen); !ok {
+			break // dir is longer than string
 		}
 
 		h := i - 1
