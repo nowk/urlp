@@ -50,11 +50,11 @@ func Match(p *Path, s string) (params, bool) {
 			break // next cusror start location is not /
 		}
 
-		i++
-
 		if ok = (n < dlen); !ok {
 			break // has more dirs than available
 		}
+
+		i++
 
 		a := p.Dirs[n]
 		alen := len(a)
