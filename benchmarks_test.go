@@ -4,6 +4,19 @@ import (
 	"testing"
 )
 
+func BenchmarkMatcherRoot(b *testing.B) {
+	p := NewPath("/")
+	u := ""
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	i := 0
+	for ; i < b.N; i++ {
+		Match(p, u)
+	}
+}
+
 func BenchmarkMatcherExact(b *testing.B) {
 	p := NewPath("/posts/comments/new")
 	u := "/posts/comments/new"

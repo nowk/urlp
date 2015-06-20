@@ -29,10 +29,13 @@ func Match(p *Path, s string) (params, bool) {
 
 		slen--
 		m--
+	} else if slen < 1 {
+		s = "/"
 	}
 
-	if s == p.Pattern || (s == "" && p.Pattern == "/") {
-		return nil, true
+	// static routes must match exactly, no need to continue after this
+	if p.Static {
+		return nil, s == p.Path
 	}
 
 	var ok bool

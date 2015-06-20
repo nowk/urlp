@@ -1,8 +1,9 @@
 package urlp
 
 type Path struct {
-	Pattern string
-	Dirs    []string
+	Path   string
+	Dirs   []string
+	Static bool
 
 	// NoOfParams is the # of params multiplied by 2 to represent the k : v pair
 	// count
@@ -13,8 +14,9 @@ func NewPath(s string) *Path {
 	d, n := parsePath(s)
 
 	return &Path{
-		Pattern: s,
-		Dirs:    d,
+		Path:   s,
+		Dirs:   d,
+		Static: n == 0,
 
 		NoOfParams: n * 2,
 	}
