@@ -46,7 +46,7 @@ func Match(p *Path, s string) (params, bool) {
 
 	for i := 0; ; {
 		if i > m {
-			break // counted past length of s
+			break // done loop
 		}
 
 		if ok = (s[i] == '/'); !ok {
