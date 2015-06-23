@@ -114,10 +114,23 @@ func TestPathDoesNotMatch(t *testing.T) {
 
 		{"/posts/:post_id/comments", "/posts/123"},
 		{"/posts/:post_id/comments", "/posts/123/"},
+
+		{"/api/label-sets/:label_set_id/labels", "/api/labelsets"},
 	} {
 		_, ok := Match(NewPath(v.p), v.u)
 		assert.False(t, ok, v.p, " ", v.u)
 		// assert.Nil(t, p)
+	}
+}
+
+func TestFixOutOfRangeErrorOnRangeEquality(t *testing.T) {
+	for _, v := range []struct {
+		p, u string
+	}{
+		{"/api/label-sets/:label_set_id/labels", "/api/labelsets"},
+	} {
+		_, ok := Match(NewPath(v.p), v.u)
+		assert.False(t, ok, v.p, " ", v.u)
 	}
 }
 

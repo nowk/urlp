@@ -80,12 +80,12 @@ func Match(p *Path, s string) (params, bool) {
 			continue
 		}
 
-		if ok = (slen > alen); !ok {
-			break // dir is longer than string
-		}
-
 		h := i - 1
 		i = h + alen
+
+		if ok = (slen >= i); !ok {
+			break // dir is longer than string
+		}
 
 		b := s[h:i]
 		if ok = (a == b); !ok {
