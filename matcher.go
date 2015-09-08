@@ -1,8 +1,8 @@
 package urlp
 
-type params []string
+type Params []string
 
-func (p params) Get(k string) string {
+func (p Params) Get(k string) string {
 	r := len(p) - 2
 
 	for i, v := range p {
@@ -18,9 +18,9 @@ func (p params) Get(k string) string {
 	return ""
 }
 
-// Match checks the pattern against the given path, returning any named params
+// Match checks the pattern against the given path, returning any named Params
 // in the process
-func Match(p *Path, s string) (params, bool) {
+func Match(p *Path, s string) (Params, bool) {
 	slen := len(s)
 	m := slen - 1
 
@@ -39,7 +39,7 @@ func Match(p *Path, s string) (params, bool) {
 	}
 
 	var ok bool
-	var pr params
+	var pr Params
 
 	dlen := len(p.Dirs)
 	n := 0 // dir index
@@ -65,7 +65,7 @@ func Match(p *Path, s string) (params, bool) {
 
 		if a[0] == ':' {
 			if pr == nil {
-				pr = make(params, 0, p.NoOfParams)
+				pr = make(Params, 0, p.NoOfParams)
 			}
 
 			h := i
