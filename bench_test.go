@@ -84,7 +84,7 @@ func BenchmarkMatcher2ParamsWithNewPattern(b *testing.B) {
 // BenchmarkMatcherRoot                     200000000                8.38 ns/op            0 B/op          0 allocs/op
 // BenchmarkMatcherExact                    200000000                8.11 ns/op            0 B/op          0 allocs/op
 // BenchmarkMatcherExactWithTrailingSlash   100000000                11.8 ns/op            0 B/op          0 allocs/op
-// BenchmarkMatcher1Param                    10000000                 199 ns/op           32 B/op          1 allocs/op
-// BenchmarkMatcher2Params                    3000000                 416 ns/op           96 B/op          2 allocs/op
-// BenchmarkMatcher2ParamsWithNewPattern      1000000                1183 ns/op          272 B/op          6 allocs/op
+// BenchmarkMatcher1Param                    10000000                 195 ns/op           32 B/op          1 allocs/op
+// BenchmarkMatcher2Params                    5000000                 297 ns/op           64 B/op          1 allocs/op
+// BenchmarkMatcher2ParamsWithNewPattern      1000000                1090 ns/op          240 B/op          5 allocs/op
 // ok      github.com/nowk/urlp    11.291s

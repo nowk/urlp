@@ -88,6 +88,21 @@ func TestMatchDynamicPaths(t *testing.T) {
 	}
 }
 
+func TestParams(t *testing.T) {
+	params, ok := NewPattern("/posts/:post_id/comments/:id").
+		Match("/posts/123/comments/456")
+
+	var exp = Params{":post_id", "123", ":id", "456"}
+
+	if !ok {
+		t.Errorf("expected a match")
+	}
+
+	if !reflect.DeepEqual(exp, params) {
+		t.Errorf("expected %s, got %s", exp, params)
+	}
+}
+
 func TestDoesNotMatch(t *testing.T) {
 	for _, v := range []struct {
 		pat, path string
