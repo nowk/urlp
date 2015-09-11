@@ -1,21 +1,21 @@
 # urlp
 
 [![Build Status](https://travis-ci.org/nowk/urlp.svg?branch=master)](https://travis-ci.org/nowk/urlp)
-[![GoDoc](https://godoc.org/gopkg.in/nowk/urlp.v2?status.svg)](http://godoc.org/gopkg.in/nowk/urlp.v2)
+[![GoDoc](https://godoc.org/gopkg.in/nowk/urlp.v3?status.svg)](http://godoc.org/gopkg.in/nowk/urlp.v3)
 
 URL pattern match
 
 
 ## Install
 
-    go get gopkg.in/nowk/urlp.v2
+    go get gopkg.in/nowk/urlp.v3
 
 
 ## Examples
 
-    p := urlp.NewPath("/posts/:post_id/comments/:id")
+    p := urlp.NewPattern("/posts/:post_id/comments/:id")
 
-    v, ok := urlp.Match(p, "/posts/123/comments/456")
+    v, ok := p.Match("/posts/123/comments/456")
     if !ok {
       // handle
     }
