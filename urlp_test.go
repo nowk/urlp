@@ -9,7 +9,7 @@ func TestPattern(t *testing.T) {
 	for _, v := range []struct {
 		giv        string
 		exp        []node
-		rootPath   node
+		rootPath   string
 		noOfParams int
 	}{
 		{"", []node{"/"}, "/", 0},

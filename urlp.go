@@ -88,13 +88,13 @@ func NewPattern(path string) *Pattern {
 
 // RootPath is a utility function to return the first Node in our list of
 // Nodes, which should be the path up to the first :param
-func (p *Pattern) RootPath() node {
+func (p *Pattern) RootPath() string {
 	root := p.Nodes[0]
 	if root == "" || root[0] == ':' {
 		return "/"
 	}
 
-	return root
+	return string(root)
 }
 
 func (p *Pattern) Match(path string) (Params, bool) {
