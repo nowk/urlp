@@ -39,6 +39,7 @@ func NewPattern(path string) *Pattern {
 
 	c := 0 // cursor
 	i := 0
+	var newNode bool
 	for {
 		i++
 
@@ -55,9 +56,19 @@ func NewPattern(path string) *Pattern {
 				if char == ':' {
 					noOfParams++
 				}
-			}
 
-			nodes = append(nodes, node(part))
+				nodes = append(nodes, node(part))
+
+				newNode = true
+			} else {
+				if newNode || nodes == nil {
+					nodes = append(nodes, node(part))
+
+					newNode = false
+				} else {
+					nodes[len(nodes)-1] += node(part)
+				}
+			}
 
 			c = i // move cursor
 		}
@@ -73,6 +84,17 @@ func NewPattern(path string) *Pattern {
 		Static:     noOfParams == 0,
 		NoOfParams: noOfParams * 2,
 	}
+}
+
+// RootPath is a utility function to return the first Node in our list of
+// Nodes, which should be the path up to the first :param
+func (p *Pattern) RootPath() node {
+	root := p.Nodes[0]
+	if root == "" || root[0] == ':' {
+		return "/"
+	}
+
+	return root
 }
 
 func (p *Pattern) Match(path string) (Params, bool) {

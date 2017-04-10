@@ -7,30 +7,36 @@ import (
 
 func TestPattern(t *testing.T) {
 	for _, v := range []struct {
-		giv string
-		exp []node
-
+		giv        string
+		exp        []node
+		rootPath   node
 		noOfParams int
 	}{
-		{"", []node{"/"}, 0},
-		{"/", []node{"/"}, 0},
-		{"/f", []node{"/f"}, 0},
-		{"/foo", []node{"/foo"}, 0},
-		{"/foo/", []node{"/foo"}, 0},
-		{"/foo/bar", []node{"/foo", "/bar"}, 0},
-		{"/foo/bar/", []node{"/foo", "/bar"}, 0},
-		{"/foo/:bar", []node{"/foo", ":bar"}, 2},
-		{"/foo/:bar/", []node{"/foo", ":bar"}, 2},
-		{"/foo/:bar/baz/:qux", []node{"/foo", ":bar", "/baz", ":qux"}, 4},
-		{"/foo/:bar/baz/:qux/", []node{"/foo", ":bar", "/baz", ":qux"}, 4},
-		{"/:foo", []node{":foo"}, 2},
-		{"/:foo/", []node{":foo"}, 2},
-		{"/:foo/*", []node{":foo", "*"}, 2},
+		{"", []node{"/"}, "/", 0},
+		{"/", []node{"/"}, "/", 0},
+		{"/f", []node{"/f"}, "/f", 0},
+		{"/foo", []node{"/foo"}, "/foo", 0},
+		{"/foo/", []node{"/foo"}, "/foo", 0},
+		{"/foo/bar", []node{"/foo/bar"}, "/foo/bar", 0},
+		{"/foo/bar/", []node{"/foo/bar"}, "/foo/bar", 0},
+		{"/foo/:bar", []node{"/foo", ":bar"}, "/foo", 2},
+		{"/foo/:bar/", []node{"/foo", ":bar"}, "/foo", 2},
+		{"/foo/:bar/baz/:qux", []node{"/foo", ":bar", "/baz", ":qux"}, "/foo", 4},
+		{"/foo/:bar/baz/:qux/", []node{"/foo", ":bar", "/baz", ":qux"}, "/foo", 4},
+		{"/foo/:bar/baz/:qux/abc/def", []node{"/foo", ":bar", "/baz", ":qux", "/abc/def"}, "/foo", 4},
+		{"/foo/:bar/baz/:qux/abc/def/", []node{"/foo", ":bar", "/baz", ":qux", "/abc/def"}, "/foo", 4},
+		{"/:foo", []node{":foo"}, "/", 2},
+		{"/:foo/", []node{":foo"}, "/", 2},
+		{"/:foo/*", []node{":foo", "*"}, "/", 2},
 	} {
 		pat := NewPattern(v.giv)
 
 		if got := pat.Nodes; !reflect.DeepEqual(v.exp, got) {
 			t.Errorf("expected %s, got %s", v.exp, got)
+		}
+
+		if pat.RootPath() != v.rootPath {
+			t.Errorf("expected %s, got %s", v.rootPath, pat.RootPath())
 		}
 
 		if v.noOfParams != pat.NoOfParams {
@@ -73,6 +79,7 @@ func TestMatchDynamicPaths(t *testing.T) {
 		{"/posts/:id", "/posts/123"},
 		{"/posts/:post_id/comments", "/posts/123/comments"},
 		{"/posts/:post_id/comments/:id", "/posts/123/comments/456"},
+		{"/posts/:post_id/comments/:id/replies", "/posts/123/comments/456/replies"},
 	} {
 		for _, ts := range []string{
 			"",
