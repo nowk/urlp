@@ -178,3 +178,21 @@ func (p Params) Get(k string) string {
 
 	return ""
 }
+
+func (p Params) Map() map[string]string {
+	m := map[string]string{}
+
+	i := 0
+	j := len(p)
+	for ; i < j; i++ {
+		var v string
+		if i+1 < j {
+			v = p[i+1]
+		}
+
+		m[p[i]] = v
+		i++ // increment so i is always the "key" index
+	}
+
+	return m
+}

@@ -164,3 +164,46 @@ func TestMatchWildcard(t *testing.T) {
 		}
 	}
 }
+
+func TestParamsAsMap(t *testing.T) {
+	p := Params{
+		"foo",
+		"bar",
+		"baz",
+		"quz",
+	}
+
+	m := p.Map()
+	var (
+		exp = map[string]string{
+			"foo": "bar",
+			"baz": "quz",
+		}
+		got = m
+	)
+
+	if !reflect.DeepEqual(exp, got) {
+		t.Errorf("expected %v to equal %v", got, exp)
+	}
+}
+
+func TestParamsAsMapOddNumbered(t *testing.T) {
+	p := Params{
+		"foo",
+		"bar",
+		"baz",
+	}
+
+	m := p.Map()
+	var (
+		exp = map[string]string{
+			"foo": "bar",
+			"baz": "",
+		}
+		got = m
+	)
+
+	if !reflect.DeepEqual(exp, got) {
+		t.Errorf("expected %v to equal %v", got, exp)
+	}
+}
