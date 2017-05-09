@@ -137,7 +137,7 @@ func (p *Pattern) Match(path string) (Params, bool) {
 					if pr == nil {
 						pr = make(Params, 0, p.NoOfParams)
 					}
-					pr = append(pr, string(v), path[i:c])
+					pr = append(pr, string(v[1:]), path[i:c])
 
 					break
 				}

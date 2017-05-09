@@ -99,7 +99,7 @@ func TestParams(t *testing.T) {
 	params, ok := NewPattern("/posts/:post_id/comments/:id").
 		Match("/posts/123/comments/456")
 
-	var exp = Params{":post_id", "123", ":id", "456"}
+	var exp = Params{"post_id", "123", "id", "456"}
 
 	if !ok {
 		t.Errorf("expected a match")
