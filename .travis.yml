@@ -1,6 +1,8 @@
 language: go
 install:
   - go get gopkg.in/nowk/assert.v2
+script:
+  - make test
 go:
   # - "1.0" # No b.ReportAllocs()
   - "1.1"
